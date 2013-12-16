@@ -27,12 +27,6 @@
 
 #import "MainViewController.h"
 
-@interface MainViewController ()
-{
-    BOOL iOS7fixFatto;
-}
-@end
-
 @implementation MainViewController
 
 - (id)initWithNibName:(NSString*)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil
@@ -43,7 +37,6 @@
         // _commandDelegate = [[MainCommandDelegate alloc] initWithViewController:self];
         // Uncomment to override the CDVCommandQueue used
         // _commandQueue = [[MainCommandQueue alloc] initWithViewController:self];
-        iOS7fixFatto = NO;
     }
     return self;
 }
@@ -82,19 +75,6 @@
     // View defaults to full size.  If you want to customize the view's size, or its subviews (e.g. webView),
     // you can do so here.
     
-    //Lower screen 20px on ios 7
-    if (([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) && (iOS7fixFatto == NO))
-    {
-        CGRect viewBounds = [self.webView bounds];
-        viewBounds.origin.y = 20;
-        viewBounds.size.height = viewBounds.size.height - 20;
-        self.webView.frame = viewBounds;
-        
-        self.view.backgroundColor = [UIColor blackColor];
-        
-        iOS7fixFatto = YES;
-    }
-
     [super viewWillAppear:animated];
 }
 
