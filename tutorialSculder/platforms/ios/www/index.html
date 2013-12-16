@@ -9,6 +9,8 @@
 	</head>
 	<body>
 		<script type="text/javascript" src="cordova.js"></script>
+		<script src="js/iscroll-lite.js"></script>
+		<script src="js/app.js"></script>
 		<script>
 		document.addEventListener('deviceready', onDeviceReady, false);
 		
@@ -17,11 +19,13 @@
 			console.log('onDeviceReady');
 			console.log(window.device.version);
 			
-			/*if (parseFloat(window.device.version) >= 7.0)
+			if (parseFloat(window.device.version) >= 7.0)
 			{
+                console.log('ios7fix');
+                
 				var ios7fix = document.getElementById('ios7fix');
 				ios7fix.style.paddingTop = '20px';
-			}*/
+			}
 		}
 		</script>
 		<header id="ios7fix">
@@ -32,6 +36,17 @@
 			</div>
 		</div>
 		<footer>
+			<ul id="tab-bar">
+				<li>
+					<a href="#">Map</a>
+				</li>
+				<li>
+					<a href="#">Camera</a>
+				</li>
+				<li>
+					<a href="#">Twitter</a>
+				</li>
+			</ul>
 		</footer>
 	</body>
 </html>

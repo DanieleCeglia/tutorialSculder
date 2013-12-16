@@ -61,20 +61,13 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark - Colore status bar
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
 #pragma mark View lifecycle
 
 - (void)viewWillAppear:(BOOL)animated
 {
     // View defaults to full size.  If you want to customize the view's size, or its subviews (e.g. webView),
     // you can do so here.
-    
+
     [super viewWillAppear:animated];
 }
 
