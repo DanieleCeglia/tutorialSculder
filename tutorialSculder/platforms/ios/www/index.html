@@ -8,8 +8,10 @@
 		<script src="js/jquery-2.0.3.min.js"></script>
 		<script src="js/jquery.mobile-1.3.2.min.js"></script>
 		<script type="text/javascript" src="cordova.js"></script>
-		<!-- <script type="text/javascript" src="js/iscroll-lite.js"></script> -->
-		<!-- <script type="text/javascript" src="js/app.js"></script> -->
+		<!-- <script type="text/javascript" src="js/iscroll-lite.js"></script>
+		<script type="text/javascript" src="js/app.js"></script> -->
+		<!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" /> -->
 		<script>
 		document.addEventListener('deviceready', onDeviceReady, false);
 		
@@ -73,9 +75,98 @@
 					
 					fromPage.removeClass("current fade out");
 					toPage.removeClass("fade in");
+					
+					if (toPage.attr("id") == "twitter")
+					{
+						getTweets();
+					}
 				});
 			}
+			
+			function getTweets()
+			{
+				console.log('getTweets');
+				
+				var q = "ufo+spotted",
+					rpp = 5,
+					twurl = "http://search.twitter.com/search.json?q=";
+				
+				console.log('Invio: ' + twurl + q + "&rpp=" + rpp + "&callback=?");
+				
+				$.getJSON(twurl + q + "&rpp=" + rpp + "&callback=?", function(data) {
+					console.log('JSON Twitter arrivato');
+					
+					$("#tmpl-tweets").tmpl(data.results).appendTo("#tweets");
+				});
+			}
+			
+			//var map = new GoogleMap();
+    		//map.initialize();
 		}
+		/*
+		function GoogleMap()
+		{
+			this.initialize = function() {
+				var map = showMap();
+			}
+			
+			var showMap = function() {
+				var mapOptions = {	zoom: 4,
+									center: new google.maps.LatLng(-33, 151),
+									mapTypeId: google.maps.MapTypeId.ROADMAP
+				}
+				
+				var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+				
+				return map;
+			}
+		}*/
+		function capturePhoto()
+		{
+			console.log('capturePhoto');
+			
+			navigator.camera.getPicture(uploadPhoto, onFail, {quality:60});
+			
+			console.log('asd');
+		}
+		function uploadPhoto(imageURI)
+		{
+			console.log('uploadPhoto');
+			
+			// this is where you would send the image file to server
+			//output image to screen
+			var cameraPic = document.getElementById('cameraPic');
+            cameraPic.src = imageURI;
+			var divCamera = document.getElementById('divCamera');
+			divCamera.style.display = 'block';
+			// Successful upload to the server
+			navigator.notification.alert(	'Your Photo has been uploaded', // message
+											okay,                           // callback
+											'Photo Uploaded',               // title
+											'OK'                            // buttonName
+										);
+			// upload has failed Fail
+			/*
+			if (failedToUpload)
+			{
+				navigator.notification.alert(	'Your Photo has failed to upload',
+												failedDismissed,
+												'Photo Not Uploaded',
+												'OK'
+											);
+			}
+			*/
+		}
+		function okay()
+		{
+			console.log('okay');
+		}
+        function onFail(message)
+        {
+			console.log('onFail()');
+			
+			alert('Failed because: ' + message);
+        }
 		</script>
 		<title>Sculder</title>
 	</head>
@@ -87,13 +178,24 @@
 			<div id="main-content">
 				<div id="pages">
 					<div id="map" class="current">
-						mappa
+						mappa<!-- <div id="map-canvas"/> -->
 					</div>
 					<div id="camera">
-						camera
+						<button class="camera-control" onclick="capturePhoto();">Capture Photo</button>
+						<div id="divCamera" style="display:none;text-align:center;margin:20px;">
+							<img id="cameraPic" src="damettere" style="width:auto;height:120px;" alt="" />
+						</div>
 					</div>
 					<div id="twitter">
-						twitter
+						<ul id="tweets">
+						</ul>
+						<script id="tmpl-tweets" type="text/x-jquery-tmpl">
+							<li>
+								<a class="avatar" href="#"><img src="${profile_image_url}" alt="${from_user}"></a>
+								<a href="http://twitter.com/${from_user}"><h2>${from_user}</h2></a>
+								<span class="details">${text}</span>
+							</li>
+						</script>
 					</div>
 				</div>
 			</div>
